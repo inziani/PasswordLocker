@@ -41,7 +41,7 @@ After creation should not create another User again
 
 
 class User:
-    UserDetails = dict()
+    user_list = list()
     """This dictionary contains a user's detailed information. It will be updated with the various class methods"""
 
     def __init__(self, first_name, last_name, phone_number, email, username, password):
@@ -52,37 +52,55 @@ class User:
         self.username = username
         self.password = password
 
-    def save_user(self):
-        """ save user created on to the user dict in the dict class dict object"""
-        User.UserDetails.update(
-            {self.username: [self.first_name, self.last_name, self.phone_number, self.email, self.username,
-                             self.password]})
+    def change_name(self, user_name, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
 
-    def delete_user(self):
-        """delete_user method deletes saved user from the user dictionary"""
-        User.UserDetails.pop(self.username)
+    def change_phone(self, phone_number):
+        self.phone_number = phone_number
 
-    @classmethod
-    def find_username_pw(cls, username):
-        """method takes in username and password and returns the details that match it
-        Args:
-            username and password
-        Returns:
-            user details
-            """
-        for key, value in User.UserDetails.items():
-            if key == username:
-                return username
+    def change_email(self, email):
+        self.email = email
 
-        # for username in cls.UserDetails:
-        #     if User.UserDetails['username'] == username:
-        #         return username
-        # [key for key, value in User.UserDetails.items() if key == username]
+    def change_username(self, username):
+        self.username = username
+
+    def change_password(self, password):
+        self.password = password
 
     @classmethod
     def display_users(cls):
         """method that returns the user dictionary list"""
-        return cls.UserDetails
+        return cls.user_list
+
+    # def save_user(self):
+    #     """ save user created on to the user dict in the dict class dict object"""
+    #     User.UserDetails.update(
+    #         {self.username: [self.first_name, self.last_name, self.phone_number, self.email, self.username,
+    #                          self.password]})
+
+    # This section will be activated later.
+    # def delete_user(self):
+    #     """delete_user method deletes saved user from the user dictionary"""
+    #     User.UserDetails.pop(self.username)
+
+    # @classmethod
+    # def find_username_pw(cls, username):
+    #     """method takes in username and password and returns the details that match it
+    #     Args:
+    #         username and password
+    #     Returns:
+    #         user details
+    #         """
+    #     for key, value in User.UserDetails.items():
+    #         if key == username:
+    #             return username
+    #
+    #     # for username in cls.UserDetails:
+    #     #     if User.UserDetails['username'] == username:
+    #     #         return username
+    #     # [key for key, value in User.UserDetails.items() if key == username]
+    #
 
 
 """
