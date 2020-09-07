@@ -19,6 +19,22 @@ Python
 Install python
 Call python3 PasswordLockerRun.py to run it.
 
+#### BDD
+
+<ol>
+<li>Create a password locker account with user details, a login username and password.</li>
+<li>Store  existing account credentials in the application. Assuming one already
+has a twitter account, they should store my already existing twitter username and 
+password in the application.</li>
+<li>Create new account credentials in the application. For example, if a user has not yet signed up
+for Instagram, they should be able to create a credentials account for Instagram in the 
+application and have it  generate a password for them to use when they sign up for Instagram or
+put in a password that they prefer.</li>
+<li>View  various account credentials and passwords in the application.</li>
+<li>
+Delete a credentials account  no longer needed in the application.</li>
+</ol>
+
 #### Menu 
 <ol>
     <li>Create new user account</li>

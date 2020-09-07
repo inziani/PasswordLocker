@@ -1,12 +1,14 @@
 #!/usr/bin/env python3.8
+"""This the main program file that runs the password locker application"""
 import sys
 import time
 
+from SocialMedia import SocialMedia
 from User import User
 
 
 def create_user(f_name, l_name, phone, email, user_name, pass_word):
-    """Function to create a new User """
+    """Function to create a new User  in the application - User class"""
     new_user = User(f_name, l_name, phone, email, user_name, pass_word)
     User.user_list.append(new_user.first_name)
     User.user_list.append(new_user.last_name)
@@ -20,22 +22,58 @@ def create_user(f_name, l_name, phone, email, user_name, pass_word):
     return new_user
 
 
+def social_media_acc(ss_platform, ss_username, ss_password):
+    """Function to create a new social media account in the application - User class"""
+    new_ss_account = SocialMedia(ss_platform, ss_username, ss_password)
+    SocialMedia.social_media_accounts.append(new_ss_account.social_media_platform)
+    SocialMedia.social_media_accounts.append(new_ss_account.username)
+    SocialMedia.social_media_accounts.append(new_ss_account.password)
+    with open('social_media.txt', newline='', mode='a') as add_account:
+        add_account.write('\n')
+        add_account.write(str(SocialMedia.social_media_accounts))
+    return new_ss_account
+
+
+def new_password():
+    """This function calls the function generation method"""
+    SocialMedia.pass_word()
+
+
 def check_username(user_name):
-    while True:
-        old_user_name = list()
-        with open('users.txt', 'r') as existing_username:
-            for Line in existing_username:
-                old_user_name = eval(Line)
-                eva_user_name = list(','.join(old_user_name).split(','))
-                if user_name == eva_user_name[4]:
-                    print('That user name is taken, pick another one and try again.')
-        break
-    sys.exit()
+    """This function checks if the new username  chosen by new user during
+    account creation exists. Only non existence usernames are accepted. """
+    old_user_name = list()
+    with open('users.txt', 'r') as existing_username:
+        for Line in existing_username:
+            old_user_name = eval(Line)
+            eva_user_name = list(','.join(old_user_name).split(','))
+            if user_name == eva_user_name[4]:
+                print('That user name is taken, pick another one and try again.')
+                sys.exit()
 
 
-def delete_user(user):
-    """method to delete a user"""
-    user.delete_user()
+def log_on(user_name, pass_word):
+    """This is the log on function that checks if the user exists in the application."""
+    user_log_on = list()
+    with open('users.txt', 'r') as log_on_details:
+        for Line in log_on_details:
+            if user_name in Line:
+                user_log_on = eval(Line)
+                log_on_check = list(','.join(user_log_on).split(','))
+                if str(user_name) != str(log_on_check[4]) or str(pass_word) != str(log_on_check[5]):
+                    print('Invalid user name or password')
+                    sys.exit()
+
+
+def display_user_sm(plat_form):
+    """This function is used to display the user details in the application. It needs to be modified
+    to pick a specific person's information"""
+    display_details = list()
+    with open('social_media.txt', 'r') as display_username:
+        for Line in display_username:
+            if plat_form.lower() in Line:
+                display_details = eval(Line)
+                print(display_details)
 
 
 def display_user(user_name):
@@ -50,6 +88,7 @@ def display_user(user_name):
 
 
 def modify_user_details(user_name):
+    """This function is used to modify users in the User class"""
     changed_name = list()
     print('1 to modify your name \n'
           '2 to modify your phone number \n'
@@ -128,7 +167,13 @@ def modify_user_details(user_name):
         print('invalid code')
 
 
+def delete_user(user):
+    """This function is used to  to delete a user in the user class"""
+    user.delete_user()
+
+
 def main():
+    """This is the main function that is used to run the whole application"""
     print('Hello, welcome to our social media accounts app. What is your name?')
     print('\n')
     user_name = input()
@@ -171,6 +216,14 @@ def main():
         time.sleep(int(3))
 
     elif user_status == 'eu' or user_status == 'ss':
+        print('Please log in with your username and password \n'
+              'User name')
+        user_name = input()
+
+        print('Password')
+        pass_word = input()
+        log_on(user_name, pass_word)
+
         # Log on function
         print('Use these short codes to select the service you want:\n'
               'dd : Display your details \n'
@@ -192,11 +245,29 @@ def main():
             user_name = input()
             modify_user_details(user_name)
 
-            # if user_name != User.user_list[4]:  to modify the log in details function
-            #     modify_user_details(user_name)
-            # else:
-            #     print('The username does not exist')
-            #     sys.exit('The username does not exist')
+        elif short_code == 's1':
+            print('create new social media account')
+
+            print('Social media platform..')
+            ss_platform = input().title()
+
+            print('Username..')
+            ss_username = input().title()
+
+            print('Password...\n')
+            ss_password = input()
+
+            social_media_acc(ss_platform, ss_username, ss_password)
+            print(
+                ' Your account + ' '{} {} {}'.format(ss_platform,
+                                                     ss_username, ss_password) + ' ' + 'has been created.')
+            time.sleep(int(3))
+
+        if short_code == 's2':
+            print('Key in the social media plat form')
+            plat_form = input()
+            print('Your details on file..')
+            display_user_sm(plat_form)
 
         elif short_code == 'ex':
             print('Goodbye')
