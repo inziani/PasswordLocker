@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.8
+import sys
 import time
 
 from User import User
@@ -20,14 +21,26 @@ def create_user(f_name, l_name, phone, email, user_name, pass_word):
 
 
 def check_username(user_name):
-    with open('users.txt', 'r') as existing_username:
-        for Line in existing_username:
-            if user_name in Line:
-                pass
-        print('That user name is taken, pick another one.')
+    while True:
+        old_user_name = list()
+        with open('users.txt', 'r') as existing_username:
+            for Line in existing_username:
+                old_user_name = eval(Line)
+                eva_user_name = list(','.join(old_user_name).split(','))
+                if user_name == eva_user_name[4]:
+                    print('That user name is taken, pick another one and try again.')
+        break
+    sys.exit()
+
+
+def delete_user(user):
+    """method to delete a user"""
+    user.delete_user()
 
 
 def display_user(user_name):
+    """This function is used to display the user details in the application. It needs to be modified
+    to pick a specific person's information"""
     display_details = list()
     with open('users.txt', 'r') as display_username:
         for Line in display_username:
@@ -115,77 +128,60 @@ def modify_user_details(user_name):
         print('invalid code')
 
 
-def save_user(user):
-    """ method to save new users"""
-    user.save_user()
-
-
-def delete_user(user):
-    """method to delete a user"""
-    user.delete_user()
-
-
-def find_username(username):
-    """Find user by password and username"""
-    return username
-
-
-def display_users():
-    return User.display_users()
-
-
 def main():
     print('Hello, welcome to our social media accounts app. What is your name?')
     print('\n')
     user_name = input()
 
-    print(f'{user_name}, Type ss to maintain your social media accounts \n'
-          f'uu to create an account or manage an existing account')
+    print(f'Hi, {user_name} \n'
+          f' nu - Visitor - Create an account with us \n'
+          f' eu - Maintain your account with us \n'
+          f' ss - Manage your social media accounts')
     print('\n')
 
     user_status = input().lower()
-    if user_status == 'ss':
-        print('We shall revisit')
 
-    elif user_status == 'uu':
+    if user_status == 'nu':
+        print('fill in the details below to create a new account')
+
+        print('First name..')
+        f_name = input().title()
+
+        print('Last name..')
+        l_name = input().title()
+
+        print('Phone number...')
+        phone = input()
+
+        print('Your email..')
+        email = input()
+
+        print('Preferred username..')
+        user_name = input()
+        check_username(user_name)
+
+        print('Password..')
+        pass_word = input()
+
+        create_user(f_name, l_name, phone, email, user_name, pass_word)
+        print(
+            ' Your account + ' '{} {}'.format(f_name,
+                                              l_name) + ' ' + 'has been created, log in with your username '
+                                                              'and password to activate it.')
+        time.sleep(int(3))
+
+    elif user_status == 'eu' or user_status == 'ss':
+        # Log on function
         print('Use these short codes to select the service you want:\n'
-              'cc : Create a new account \n'
               'dd : Display your details \n'
               'cg : Edit your details \n'
+              's1 : create a social media account \n'
+              's2 : display your social media accounts \n'
+              's3 : delete a social medial account \n'
               'ex : exit')
-
         short_code = input().lower()
 
-        if short_code == 'cc':
-            print('Welcome to social media manager.')
-
-            print('First name..')
-            f_name = input().title()
-
-            print('Last name..')
-            l_name = input().title()
-
-            print('Phone number...')
-            phone = input()
-
-            print('Your email..')
-            email = input()
-
-            print('Preferred username..')
-            user_name = input()
-            check_username(user_name)  # Come back to correct the loop
-
-            print('Password..')
-            pass_word = input()
-
-            create_user(f_name, l_name, phone, email, user_name, pass_word)
-            print(
-                ' Your account + ' '{} {}'.format(f_name,
-                                                  l_name) + ' ' + 'has been created, log in with your username '
-                                                                  'and password to activate it.')
-            time.sleep(int(3))
-
-        elif short_code == 'dd':
+        if short_code == 'dd':
             print('Key in your username')
             user_name = input()
             print('Your details on file..')

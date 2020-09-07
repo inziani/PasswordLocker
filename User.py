@@ -52,22 +52,6 @@ class User:
         self.username = username
         self.password = password
 
-    def change_name(self, user_name, first_name, last_name):
-        self.first_name = first_name
-        self.last_name = last_name
-
-    def change_phone(self, phone_number):
-        self.phone_number = phone_number
-
-    def change_email(self, email):
-        self.email = email
-
-    def change_username(self, username):
-        self.username = username
-
-    def change_password(self, password):
-        self.password = password
-
     @classmethod
     def display_users(cls):
         """method that returns the user dictionary list"""
